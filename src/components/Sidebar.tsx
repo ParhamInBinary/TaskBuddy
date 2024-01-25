@@ -1,32 +1,38 @@
-import { Box } from '@mui/material';
+import { Add, MoreVert } from '@mui/icons-material';
 
-import { useState } from 'react';
+import { TaskType, useTaskContext } from '../context';
 import {
   CategoryBtn,
-  SidebarHeader,
+  ClearAllBtn,
   SidebarWrapper,
-  TaskModalBtn,
+  TaskList,
 } from './SidebarStyles';
+import { Task } from './Task';
 
 export const Sidebar = () => {
-  const [inputValue, setInputValue] = useState<string>('');
-  const [taskList, setTasklist] = useState<[] | string[]>([]);
+  const { taskList, handleOpenTaskModal, handleClearAllTasks } =
+    useTaskContext();
 
-  const handleAddTask = () => {
-    setTasklist((prev) => [...prev, inputValue]);
-    setInputValue('');
-  };
   return (
     <SidebarWrapper>
-      <SidebarHeader>
-        <CategoryBtn>My tasks</CategoryBtn>
-        <TaskModalBtn onClick={handleAddTask}>+</TaskModalBtn>
-      </SidebarHeader>
-      <Box>
-        {taskList.map((task) => (
-          <p>{task}</p>
-        ))}
-      </Box>
+      <CategoryBtn>
+        My tasks
+        <MoreVert style={{ position: 'absolute', right: 0 }} />
+      </CategoryBtn>
+      <TaskList>
+        <>
+          {taskList.map((task: TaskType) => (
+            <Task
+              title={task.title}
+              description={task.description}
+              date={task.date}
+              status={task.status}
+            />
+          ))}
+          <Add style={{ margin: 5 }} onClick={handleOpenTaskModal} />
+        </>
+      </TaskList>
+      <ClearAllBtn onClick={handleClearAllTasks}>Clear all</ClearAllBtn>
     </SidebarWrapper>
   );
 };
