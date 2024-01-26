@@ -1,6 +1,7 @@
 import { Add, MoreVert } from '@mui/icons-material';
 
 import { TaskType, useTaskContext } from '../context';
+import { AddTaskModal } from './AddTaskModal';
 import {
   CategoryBtn,
   ClearAllBtn,
@@ -21,18 +22,20 @@ export const Sidebar = () => {
       </CategoryBtn>
       <TaskList>
         <>
-          {taskList.map((task: TaskType) => (
+          {taskList.map((task: TaskType, index: number) => (
             <Task
+              key={index}
               title={task.title}
               description={task.description}
               date={task.date}
-              status={task.status}
+              isCompleted={task.isCompleted}
             />
           ))}
           <Add style={{ margin: 5 }} onClick={handleOpenTaskModal} />
         </>
       </TaskList>
       <ClearAllBtn onClick={handleClearAllTasks}>Clear all</ClearAllBtn>
+      <AddTaskModal />
     </SidebarWrapper>
   );
 };

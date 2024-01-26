@@ -19,10 +19,8 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
   const [taskList, setTasklist] = useState<[] | TaskType[]>([]);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
 
-  const handleAddTask = () => {};
-
   const handleOpenTaskModal = () => {
-    setIsTaskModalOpen(true);
+    setIsTaskModalOpen(!isTaskModalOpen);
   };
 
   const handleClearAllTasks = () => {
