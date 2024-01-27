@@ -1,17 +1,30 @@
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 
-import { EmptyGridItem, DayGridItem, GridItem } from './components';
+import {
+  CalendarVaiant,
+  DayGridItem,
+  EmptyGridItem,
+  GridItem,
+  MonthSwitchDirection,
+} from './components';
 
-export const Calendar = () => {
-  const weekdaysCapitals = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+interface ICalendar {
+  variant: string;
+}
+
+export const Calendar = ({ variant }: ICalendar) => {
+  const weekdaysCapitals =
+    variant === CalendarVaiant.MINI
+      ? ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+      : ['Mon', 'Tus', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const today = new Date();
   const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
 
-  const handleSwitchMonth = (direction: string) => {
+  const handleSwitchMonth = (direction: MonthSwitchDirection) => {
     setCurrentMonthIndex((prevIndex) =>
-      direction === 'next' ? prevIndex + 1 : prevIndex - 1
+      direction === MonthSwitchDirection.NEXT ? prevIndex + 1 : prevIndex - 1
     );
   };
 
@@ -36,7 +49,7 @@ export const Calendar = () => {
     const calendar = [];
 
     for (let i = 0; i < emptySquares; i++) {
-      calendar.push(<EmptyGridItem key={`empty-${i}`} />);
+      calendar.push(<EmptyGridItem key={`empty-${i}`} variant={variant} />);
     }
 
     for (let i = 1; i <= daysInMonth; i++) {
@@ -45,6 +58,7 @@ export const Calendar = () => {
           key={`day-${i}`}
           day={i}
           currentMonthIndex={currentMonthIndex}
+          variant={variant}
         />
       );
     }
@@ -52,32 +66,79 @@ export const Calendar = () => {
     return calendar;
   }, [currentMonthIndex]);
 
-  return (
-    <Box>
-      <Box
-        display="flex"
-        width={'100%'}
-        sx={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'space-between',
-          padding: '0 10px',
-        }}
-      >
-        <Typography>
-          <NavigateBefore onClick={() => handleSwitchMonth('prev')} />
-        </Typography>
-        <Typography>{getMonthName(currentMonthIndex)}</Typography>
-        <Typography>
-          <NavigateNext onClick={() => handleSwitchMonth('next')} />
-        </Typography>
+  /* =================================================== */
+  /* :::::::::::::::: ADD TASK CALENDAR :::::::::::::::: */
+  /* =================================================== */
+
+  if (variant === CalendarVaiant.MINI) {
+    return (
+      <Box>
+        <Box
+          sx={{
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-between',
+            padding: '0 10px',
+          }}
+        >
+          <Typography>
+            <NavigateBefore
+              onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
+            />
+          </Typography>
+          <Typography>{getMonthName(currentMonthIndex)}</Typography>
+          <Typography>
+            <NavigateNext
+              onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
+            />
+          </Typography>
+        </Box>
+        <Grid container columns={7} width="200px">
+          {weekdaysCapitals.map((day, index) => (
+            <GridItem key={`weekday-${index}`} text={day} variant={variant} />
+          ))}
+          {renderDays}
+        </Grid>
       </Box>
-      <Grid container columns={7} width="200px">
-        {weekdaysCapitals.map((day, index) => (
-          <GridItem key={`weekday-${index}`} text={day} />
-        ))}
-        {renderDays}
-      </Grid>
-    </Box>
-  );
+    );
+  }
+
+  /* =================================================== */
+  /* :::::::::::::::: HOMEPAGE CALENDAR :::::::::::::::: */
+  /* =================================================== */
+
+  if (variant === CalendarVaiant.REGULAR) {
+    return (
+      <Box flex={1}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '10px 20px',
+          }}
+        >
+          <Typography>{getMonthName(currentMonthIndex)}</Typography>
+          <Box display={'flex'}>
+            <Button>
+              <NavigateBefore
+                onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
+              />
+            </Button>
+            <Button>
+              <NavigateNext
+                onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
+              />
+            </Button>
+          </Box>
+        </Box>
+        <Grid container columns={7} flex={1}>
+          {weekdaysCapitals.map((day, index) => (
+            <GridItem key={`weekday-${index}`} text={day} variant={variant} />
+          ))}
+          {renderDays}
+        </Grid>
+      </Box>
+    );
+  }
 };

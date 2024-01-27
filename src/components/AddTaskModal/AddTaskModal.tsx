@@ -2,7 +2,7 @@ import { Box, Button, Modal, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 
 import { useTaskContext } from '../../context';
-import { Calendar } from '../Calendar';
+import { Calendar, CalendarVaiant } from '../Calendar';
 import { TaskModal } from './AddTaskModalStyles';
 
 export const AddTaskModal = () => {
@@ -56,7 +56,7 @@ export const AddTaskModal = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </Box>
-          <Calendar />
+          <Calendar variant={CalendarVaiant.MINI} />
         </Box>
 
         <Button onClick={handleOpenTaskModal}>Cancel</Button>
