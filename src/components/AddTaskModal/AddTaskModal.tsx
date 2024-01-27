@@ -1,9 +1,9 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
-
 import { useState } from 'react';
-import { useTaskContext } from '../context';
+
+import { useTaskContext } from '../../context';
+import { Calendar } from '../Calendar';
 import { TaskModal } from './AddTaskModalStyles';
-import { MiniCalendar } from './MiniCalendar';
 
 export const AddTaskModal = () => {
   const { isTaskModalOpen, handleOpenTaskModal, setTasklist } =
@@ -11,7 +11,7 @@ export const AddTaskModal = () => {
 
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [date, setDate] = useState<Date | undefined>();
+  const [date, setDate] = useState<Date>(new Date());
 
   const handleAddTask = (title: string, description: string, date: Date) => {
     const newTask = {
@@ -22,6 +22,10 @@ export const AddTaskModal = () => {
     };
 
     setTasklist((prev) => [...prev, newTask]);
+    handleOpenTaskModal();
+    setTitle('');
+    setDescription('');
+    setDate(new Date());
   };
 
   return (
@@ -35,7 +39,7 @@ export const AddTaskModal = () => {
         <Typography id="modal-modal-title" variant="h6" component="h2">
           Add a task
         </Typography>
-        <Box display='flex'>
+        <Box display="flex">
           <Box sx={{ display: 'flex', flexDirection: 'column' }}>
             <TextField
               id="filled-basic"
@@ -52,11 +56,11 @@ export const AddTaskModal = () => {
               onChange={(e) => setDescription(e.target.value)}
             />
           </Box>
-          <MiniCalendar />
+          <Calendar />
         </Box>
 
         <Button onClick={handleOpenTaskModal}>Cancel</Button>
-        <Button onClick={() => handleAddTask(title, description, new Date())}>
+        <Button onClick={() => handleAddTask(title, description, date)}>
           Add
         </Button>
       </TaskModal>

@@ -8,7 +8,7 @@ type GridItemType = {
   currentMonthIndex?: number;
 };
 
-export const MiniCalendar = () => {
+export const Calendar = () => {
   const weekdaysCapitals = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
   const today = new Date();
   const [currentMonthIndex, setCurrentMonthIndex] = useState(0);

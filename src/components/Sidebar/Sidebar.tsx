@@ -1,14 +1,14 @@
 import { Add, MoreVert } from '@mui/icons-material';
 
-import { TaskType, useTaskContext } from '../context';
-import { AddTaskModal } from './AddTaskModal';
+import { TaskType, useTaskContext } from '../../context';
+import { AddTaskModal } from '../AddTaskModal';
+import { Task } from '../Task';
 import {
   CategoryBtn,
   ClearAllBtn,
   SidebarWrapper,
   TaskList,
 } from './SidebarStyles';
-import { Task } from './Task';
 
 export const Sidebar = () => {
   const { taskList, handleOpenTaskModal, handleClearAllTasks } =
