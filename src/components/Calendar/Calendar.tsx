@@ -2,11 +2,7 @@ import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Box, Grid, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 
-type GridItemType = {
-  text?: string;
-  day?: number;
-  currentMonthIndex?: number;
-};
+import { EmptyGridItem, DayGridItem, GridItem } from './components';
 
 export const Calendar = () => {
   const weekdaysCapitals = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
@@ -83,39 +79,5 @@ export const Calendar = () => {
         {renderDays}
       </Grid>
     </Box>
-  );
-};
-
-const GridItem = ({ text }: GridItemType) => (
-  <Grid
-    item
-    xs={1}
-    sm={1}
-    md={1}
-    lg={1}
-    xl={1}
-    sx={{ width: '1px', textAlign: 'center', color: '#000' }}
-  >
-    <Typography variant="caption">{text}</Typography>
-  </Grid>
-);
-
-const EmptyGridItem = () => (
-  <Grid item xs={1} sm={1} md={1} lg={1} xl={1} sx={{ textAlign: 'center' }}>
-    <Typography variant="caption"></Typography>
-  </Grid>
-);
-
-const DayGridItem = ({ day, currentMonthIndex }: GridItemType) => {
-  const today = new Date();
-  const isToday =
-    today.getDate() === day &&
-    today.getMonth() === today.getMonth() + currentMonthIndex!;
-  return (
-    <Grid item xs={1} sm={1} md={1} lg={1} xl={1} sx={{ textAlign: 'center' }}>
-      <Typography variant="caption" sx={{ color: isToday ? 'red' : 'inherit' }}>
-        {day}
-      </Typography>
-    </Grid>
   );
 };
