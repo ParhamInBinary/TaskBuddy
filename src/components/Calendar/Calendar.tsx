@@ -1,5 +1,5 @@
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, ButtonGroup, Grid, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 
 import {
@@ -8,6 +8,8 @@ import {
   EmptyGridItem,
   GridItem,
   MonthSwitchDirection,
+  RegularCalendarHeader,
+  RegularCalendarWrapper,
 } from './components';
 
 interface ICalendar {
@@ -109,36 +111,39 @@ export const Calendar = ({ variant }: ICalendar) => {
 
   if (variant === CalendarVaiant.REGULAR) {
     return (
-      <Box flex={1}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            padding: '10px 20px',
-          }}
-        >
-          <Typography>{getMonthName(currentMonthIndex)}</Typography>
-          <Box display={'flex'}>
-            <Button>
-              <NavigateBefore
-                onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
-              />
+      <RegularCalendarWrapper>
+        <RegularCalendarHeader>
+          <Typography variant="h2" color={'#FFF'}>
+            <span style={{ fontWeight: '600' }}>
+              {getMonthName(currentMonthIndex).split(' ')[0]}
+            </span>{' '}
+            <span>{getMonthName(currentMonthIndex).split(' ')[1]}</span>
+          </Typography>
+          <ButtonGroup
+            variant="contained"
+            aria-label="outlined primary button group"
+          >
+            <Button
+              onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
+            >
+              <NavigateBefore />
             </Button>
-            <Button>
-              <NavigateNext
-                onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
-              />
+            <Button
+              onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
+            >
+              <NavigateNext />
             </Button>
-          </Box>
-        </Box>
-        <Grid container columns={7} flex={1}>
+          </ButtonGroup>
+        </RegularCalendarHeader>
+        <Grid container columns={7}>
           {weekdaysCapitals.map((day, index) => (
             <GridItem key={`weekday-${index}`} text={day} variant={variant} />
           ))}
+        </Grid>
+        <Grid container columns={7} flex={1}>
           {renderDays}
         </Grid>
-      </Box>
+      </RegularCalendarWrapper>
     );
   }
 };

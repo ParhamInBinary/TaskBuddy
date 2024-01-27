@@ -1,14 +1,10 @@
 import { Add, MoreVert } from '@mui/icons-material';
 
+import { Button } from '@mui/material';
 import { TaskType, useTaskContext } from '../../context';
 import { AddTaskModal } from '../AddTaskModal';
 import { Task } from '../Task';
-import {
-  CategoryBtn,
-  ClearAllBtn,
-  SidebarWrapper,
-  TaskList,
-} from './SidebarStyles';
+import { ClearAllBtn, SidebarWrapper, TaskList } from './SidebarStyles';
 
 export const Sidebar = () => {
   const { taskList, handleOpenTaskModal, handleClearAllTasks } =
@@ -16,10 +12,10 @@ export const Sidebar = () => {
 
   return (
     <SidebarWrapper>
-      <CategoryBtn>
+      <Button variant="contained">
         My tasks
         <MoreVert style={{ position: 'absolute', right: 0 }} />
-      </CategoryBtn>
+      </Button>
       <TaskList>
         <>
           {taskList.map((task: TaskType, index: number) => (
@@ -31,10 +27,18 @@ export const Sidebar = () => {
               isCompleted={task.isCompleted}
             />
           ))}
-          <Add style={{ margin: 5 }} onClick={handleOpenTaskModal} />
+          <Button
+            variant="contained"
+            sx={{ margin: '5px' }}
+            onClick={handleOpenTaskModal}
+          >
+            <Add />
+          </Button>
         </>
       </TaskList>
-      <ClearAllBtn onClick={handleClearAllTasks}>Clear all</ClearAllBtn>
+      <ClearAllBtn onClick={handleClearAllTasks} variant="contained">
+        Clear all
+      </ClearAllBtn>
       <AddTaskModal />
     </SidebarWrapper>
   );

@@ -1,6 +1,7 @@
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 import { CalendarVaiant } from './calendarEnums';
+import { IsTodayGridItemStyle, RegularDayGridItemStyle } from './styles';
 import { GridItemType } from './types';
 
 export const DayGridItem = ({
@@ -43,14 +44,17 @@ export const DayGridItem = ({
         md={1}
         lg={1}
         xl={1}
-        sx={{ textAlign: 'center' }}
+        sx={RegularDayGridItemStyle}
       >
-        <Typography
-          variant="caption"
-          sx={{ color: isToday ? 'red' : 'inherit' }}
-        >
-          {day}
-        </Typography>
+        {isToday ? (
+          <Box sx={IsTodayGridItemStyle}>
+            <Typography variant="body1">{day}</Typography>
+          </Box>
+        ) : (
+          <Typography variant="body1" sx={{ color: isToday ? 'red' : '#FFF' }}>
+            {day}
+          </Typography>
+        )}
       </Grid>
     );
   }
