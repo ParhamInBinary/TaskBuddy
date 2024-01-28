@@ -1,5 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material';
 
+import { useTaskContext } from '../../../context';
 import { CalendarVaiant } from './calendarEnums';
 import { IsTodayGridItemStyle, RegularDayGridItemStyle } from './styles';
 import { GridItemType } from './types';
@@ -8,19 +9,10 @@ export const DayGridItem = ({
   day,
   currentMonthIndex,
   variant,
-  setTaskDate,
 }: GridItemType) => {
-  const today = new Date();
-  // const thisDay = new Date(
-  //   today.getFullYear(),
-  //   today.getMonth() + currentMonthIndex!,
-  //   day
-  // ).toLocaleDateString('en-US', {
-  //   month: 'short',
-  //   day: 'numeric',
-  //   year: 'numeric',
-  // });
+  const { setTaskDate } = useTaskContext();
 
+  const today = new Date();
   const isToday =
     today.getDate() === day &&
     today.getMonth() === today.getMonth() + currentMonthIndex!;
@@ -36,7 +28,6 @@ export const DayGridItem = ({
       year: 'numeric',
     });
 
-    console.log(selectedDate)
     setTaskDate!(selectedDate);
   };
 
@@ -55,7 +46,7 @@ export const DayGridItem = ({
         <Typography
           variant="caption"
           sx={{
-            color: isToday ? 'red' : 'inherit',
+            color: isToday ? 'red' : 'black',
           }}
         >
           {day}

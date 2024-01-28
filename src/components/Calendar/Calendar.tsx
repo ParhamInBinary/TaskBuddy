@@ -2,6 +2,7 @@ import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Box, Button, ButtonGroup, Grid, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 
+import { useTaskContext } from '../../context';
 import {
   CalendarVaiant,
   DayGridItem,
@@ -14,10 +15,9 @@ import {
 
 interface ICalendar {
   variant: string;
-  setTaskDate?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export const Calendar = ({ variant, setTaskDate }: ICalendar) => {
+export const Calendar = ({ variant }: ICalendar) => {
   const weekdaysCapitals =
     variant === CalendarVaiant.MINI
       ? ['M', 'T', 'W', 'T', 'F', 'S', 'S']
@@ -62,7 +62,6 @@ export const Calendar = ({ variant, setTaskDate }: ICalendar) => {
           day={i}
           currentMonthIndex={currentMonthIndex}
           variant={variant}
-          setTaskDate={setTaskDate}
         />
       );
     }

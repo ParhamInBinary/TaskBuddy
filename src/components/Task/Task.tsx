@@ -8,19 +8,13 @@ interface ITask {
 }
 
 export const Task = ({ title, description, date, isCompleted }: ITask) => {
-  const formattedDate = new Date(date).toLocaleDateString('en-US', {
-    month: 'short', // Abbreviated month name (e.g., "Jan")
-    year: 'numeric', // Four-digit year (e.g., "2024")
-    day: '2-digit', // Two-digit day of the month (e.g., "02")
-    weekday: 'short', // Abbreviated weekday name (e.g., "Mon")
-  });
 
   return (
     <Box>
       <Box>
         <Typography>{title}</Typography>
         <Typography>{description}</Typography>
-        <Typography>{formattedDate}</Typography>
+        <Typography>{date}</Typography>
       </Box>
       <Box>
         <Button></Button>

@@ -1,50 +1,21 @@
 import { Box, Button, Modal, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
 
 import { useTaskContext } from '../../context';
 import { Calendar, CalendarVaiant } from '../Calendar';
 import { TaskModal } from './AddTaskModalStyles';
 
 export const AddTaskModal = () => {
-  const { isTaskModalOpen, handleOpenTaskModal, setTasklist } =
-    useTaskContext();
-
-  const todayDateString = new Date().toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-
-  const [tasktitle, setTaskTitle] = useState<string>('');
-  const [taskDescription, setTaskDescription] = useState<string>('');
-  const [taskDate, setTaskDate] = useState<string>(todayDateString);
-  const [errorMessage, setErrorMessage] = useState<string>('');
-
-  const handleAddTask = (title: string, description: string, date: string) => {
-    // Input validation
-    if (!title.trim() || !description.trim()) {
-      setErrorMessage('Please enter a title and/or description.');
-      return;
-    }
-
-    // Sanitize input to prevent scripting attacks
-    const sanitizedTitle = title.replace(/<\/?[^>]+(>|$)/g, '');
-    const sanitizedDescription = description.replace(/<\/?[^>]+(>|$)/g, '');
-
-    const newTask = {
-      title: sanitizedTitle,
-      description: sanitizedDescription,
-      date: date,
-      isCompleted: false,
-    };
-
-    setTasklist((prev) => [...prev, newTask]);
-    handleOpenTaskModal();
-    setTaskTitle('');
-    setTaskDescription('');
-    setTaskDate(todayDateString);
-    setErrorMessage('');
-  };
+  const {
+    isTaskModalOpen,
+    handleOpenTaskModal,
+    tasktitle,
+    setTaskTitle,
+    taskDescription,
+    setTaskDescription,
+    errorMessage,
+    taskDate,
+    handleAddTask,
+  } = useTaskContext();
 
   return (
     <Modal
@@ -57,7 +28,7 @@ export const AddTaskModal = () => {
         <Typography id="modal-modal-title" variant="h5">
           New task
         </Typography>
-        <Box display="flex">
+        <Box display="flex" margin={'20px 0px'}>
           <Box
             sx={{
               display: 'flex',
@@ -84,7 +55,7 @@ export const AddTaskModal = () => {
               </Typography>
             )}
           </Box>
-          <Calendar variant={CalendarVaiant.MINI} setTaskDate={setTaskDate} />
+          <Calendar variant={CalendarVaiant.MINI} />
         </Box>
 
         <Box sx={{ display: 'flex', gap: 1 }}>

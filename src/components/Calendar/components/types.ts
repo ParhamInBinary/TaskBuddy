@@ -3,5 +3,4 @@ export type GridItemType = {
   text?: string;
   day?: number;
   currentMonthIndex?: number;
-  setTaskDate?: React.Dispatch<React.SetStateAction<string>>
 };
