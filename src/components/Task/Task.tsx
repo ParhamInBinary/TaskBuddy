@@ -33,11 +33,15 @@ export const Task = ({
         background: '#F4F4F4',
         padding: '5px',
         borderRadius: '4px',
+        boxShadow:
+          '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',
       }}
       onClick={() => handleSelectTask(id)}
     >
       <Box>
-        <Typography variant="body1">{title}</Typography>
+        <Typography variant="body1" fontWeight="600">
+          {title}
+        </Typography>
         {isTaskSelected && selectedTask?.id === id && (
           <Typography variant="subtitle2">{description}</Typography>
         )}
@@ -51,10 +55,12 @@ export const Task = ({
         }}
       >
         <RadioButtonUnchecked sx={{ color: '#1976d2' }} />
-        <Delete
-          sx={{ color: '#FF1818' }}
-          onClick={() => handleDeleteTask(id)}
-        />
+        {isTaskSelected && selectedTask?.id === id && (
+          <Delete
+            sx={{ color: '#FF1818' }}
+            onClick={() => handleDeleteTask(id)}
+          />
+        )}
       </Box>
     </Box>
   );

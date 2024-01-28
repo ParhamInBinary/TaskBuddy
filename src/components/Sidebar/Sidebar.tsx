@@ -4,7 +4,12 @@ import { Button } from '@mui/material';
 import { TaskType, useTaskContext } from '../../context';
 import { AddTaskModal } from '../AddTaskModal';
 import { Task } from '../Task';
-import { ClearAllBtn, SidebarWrapper, TaskList } from './SidebarStyles';
+import {
+  ClearAllBtn,
+  SidebarWrapper,
+  TaskList,
+  TaskListContainer,
+} from './SidebarStyles';
 
 export const Sidebar = () => {
   const {
@@ -18,30 +23,32 @@ export const Sidebar = () => {
 
   return (
     <SidebarWrapper>
-      <Button variant="contained">
-        My tasks
-        <MoreVert style={{ position: 'absolute', right: 0 }} />
-      </Button>
-      <TaskList>
-        <>
-          {taskList.map((task: TaskType, index: number) => (
-            <Task
-              key={index}
-              title={task.title}
-              description={task.description}
-              date={task.date}
-              isCompleted={task.isCompleted}
-              id={task.id}
-              handleSelectTask={handleSelectTask}
-              selectedTask={selectedTask}
-              isTaskSelected={isTaskSelected}
-            />
-          ))}
-          <Button variant="contained" onClick={handleOpenTaskModal}>
-            <Add />
-          </Button>
-        </>
-      </TaskList>
+      <TaskListContainer>
+        <Button variant="contained">
+          My tasks
+          <MoreVert style={{ position: 'absolute', right: 0 }} />
+        </Button>
+        <TaskList>
+          <>
+            {taskList.map((task: TaskType, index: number) => (
+              <Task
+                key={index}
+                title={task.title}
+                description={task.description}
+                date={task.date}
+                isCompleted={task.isCompleted}
+                id={task.id}
+                handleSelectTask={handleSelectTask}
+                selectedTask={selectedTask}
+                isTaskSelected={isTaskSelected}
+              />
+            ))}
+          </>
+        </TaskList>
+        <Button variant="contained" onClick={handleOpenTaskModal}>
+          <Add />
+        </Button>
+      </TaskListContainer>
       <ClearAllBtn onClick={handleClearAllTasks} variant="contained">
         Clear all
       </ClearAllBtn>

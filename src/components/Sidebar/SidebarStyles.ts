@@ -4,7 +4,7 @@ const cubeValue = 0.618 ** 3;
 
 export const SidebarWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
-  justifyContent: 'center',
+  justifyContent: 'space-between',
   padding: 5,
   background: '#535353',
   width: `calc(100% * ${cubeValue})`,
@@ -13,12 +13,18 @@ export const SidebarWrapper = styled(Box)(({ theme }) => ({
   gap: '5px',
 }));
 
+export const TaskListContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  maxHeight: '95%',
+  gap: 10,
+}));
+
 export const TaskList = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  height: '100%',
   gap: 10,
-  marginTop: 15,
+  overflowY: 'scroll',
 }));
 
 export const ClearAllBtn = styled(Button)(({ theme }) => ({
