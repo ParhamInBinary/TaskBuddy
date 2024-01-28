@@ -1,5 +1,6 @@
 import { PropsWithChildren, createContext, useContext, useState } from 'react';
 
+import { useLocalStorageState } from '../hooks';
 import { TaskType } from './types';
 
 interface TaskContextType {
@@ -22,7 +23,10 @@ export const TaskContext = createContext({} as TaskContextType);
 export const useTaskContext = () => useContext(TaskContext);
 
 export const TaskProvider = ({ children }: PropsWithChildren) => {
-  const [taskList, setTasklist] = useState<[] | TaskType[]>([]);
+  const [taskList, setTasklist] = useLocalStorageState(
+    [] as TaskType[],
+    'taskList'
+  );
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
   const [tasktitle, setTaskTitle] = useState<string>('');
   const [taskDescription, setTaskDescription] = useState<string>('');
@@ -54,7 +58,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
       isCompleted: false,
     };
 
-    setTasklist((prev) => [...prev, newTask]);
+    setTasklist([...taskList, newTask]);
 
     handleOpenTaskModal();
     setTaskTitle('');
