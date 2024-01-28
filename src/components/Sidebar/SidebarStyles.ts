@@ -10,12 +10,15 @@ export const SidebarWrapper = styled(Box)(({ theme }) => ({
   width: `calc(100% * ${cubeValue})`,
   flexDirection: 'column',
   height: '100vh',
-  gap: '5px'
+  gap: '5px',
 }));
 
 export const TaskList = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
   height: '100%',
   gap: 10,
+  marginTop: 15,
 }));
 
 export const ClearAllBtn = styled(Button)(({ theme }) => ({

@@ -16,6 +16,11 @@ interface TaskContextType {
   taskDate: string;
   setTaskDate: React.Dispatch<React.SetStateAction<string>>;
   handleAddTask: (title: string, description: string, date: string) => void;
+  setTasklist: React.Dispatch<React.SetStateAction<TaskType[]>>;
+  handleSelectTask: (taskId: number) => void;
+  selectedTask: TaskType | null;
+  isTaskSelected: boolean;
+  handleDeleteTask: (taskId: number) => void;
 }
 
 export const TaskContext = createContext({} as TaskContextType);
@@ -31,6 +36,8 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
   const [tasktitle, setTaskTitle] = useState<string>('');
   const [taskDescription, setTaskDescription] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isTaskSelected, setIsTaskSelected] = useState<boolean>(false);
+  const [selectedTask, setSelectedTask] = useState<null | TaskType>(null);
 
   const todayDateString = new Date().toLocaleDateString('en-US', {
     month: 'short',
@@ -52,6 +59,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     const sanitizedDescription = description.replace(/<\/?[^>]+(>|$)/g, '');
 
     const newTask: TaskType = {
+      id: Math.floor(Math.random() * 999999999),
       title: sanitizedTitle,
       description: sanitizedDescription,
       date: date,
@@ -75,6 +83,34 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     setTasklist([]);
   };
 
+  const handleSelectTask = (taskId: number) => {
+    const task = taskList.find((t: TaskType) => t.id === taskId);
+
+    if (!task) {
+      console.error(`Task with ID ${taskId} not found.`);
+      return;
+    }
+
+    if (isTaskSelected && selectedTask?.id === taskId) {
+      setSelectedTask(null);
+      setIsTaskSelected(false);
+    } else {
+      setSelectedTask(task);
+      setIsTaskSelected(true);
+    }
+  };
+
+  const handleDeleteTask = (taskId: number) => {
+    const task = taskList.find((t: TaskType) => t.id === taskId);
+
+    if (!task) {
+      console.error(`Task with ID ${taskId} not found.`);
+      return;
+    }
+
+    setTasklist(taskList.filter((t: TaskType) => t.id !== task.id));
+  };
+
   return (
     <TaskContext.Provider
       value={{
@@ -90,6 +126,11 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
         taskDate,
         setTaskDate,
         handleAddTask,
+        setTasklist,
+        handleSelectTask,
+        selectedTask,
+        isTaskSelected,
+        handleDeleteTask,
       }}
     >
       {children}

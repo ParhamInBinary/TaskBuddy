@@ -7,8 +7,14 @@ import { Task } from '../Task';
 import { ClearAllBtn, SidebarWrapper, TaskList } from './SidebarStyles';
 
 export const Sidebar = () => {
-  const { taskList, handleOpenTaskModal, handleClearAllTasks } =
-    useTaskContext();
+  const {
+    taskList,
+    handleOpenTaskModal,
+    handleClearAllTasks,
+    handleSelectTask,
+    selectedTask,
+    isTaskSelected,
+  } = useTaskContext();
 
   return (
     <SidebarWrapper>
@@ -25,6 +31,10 @@ export const Sidebar = () => {
               description={task.description}
               date={task.date}
               isCompleted={task.isCompleted}
+              id={task.id}
+              handleSelectTask={handleSelectTask}
+              selectedTask={selectedTask}
+              isTaskSelected={isTaskSelected}
             />
           ))}
           <Button variant="contained" onClick={handleOpenTaskModal}>
