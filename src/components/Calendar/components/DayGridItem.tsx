@@ -8,11 +8,37 @@ export const DayGridItem = ({
   day,
   currentMonthIndex,
   variant,
+  setTaskDate,
 }: GridItemType) => {
   const today = new Date();
+  // const thisDay = new Date(
+  //   today.getFullYear(),
+  //   today.getMonth() + currentMonthIndex!,
+  //   day
+  // ).toLocaleDateString('en-US', {
+  //   month: 'short',
+  //   day: 'numeric',
+  //   year: 'numeric',
+  // });
+
   const isToday =
     today.getDate() === day &&
     today.getMonth() === today.getMonth() + currentMonthIndex!;
+
+  const handleSetTaskDate = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() + currentMonthIndex!);
+    date.setDate(day!);
+
+    const selectedDate = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+    });
+
+    console.log(selectedDate)
+    setTaskDate!(selectedDate);
+  };
 
   if (variant === CalendarVaiant.MINI) {
     return (
@@ -24,10 +50,13 @@ export const DayGridItem = ({
         lg={1}
         xl={1}
         sx={{ textAlign: 'center', cursor: 'pointer' }}
+        onClick={handleSetTaskDate}
       >
         <Typography
           variant="caption"
-          sx={{ color: isToday ? 'red' : 'inherit' }}
+          sx={{
+            color: isToday ? 'red' : 'inherit',
+          }}
         >
           {day}
         </Typography>

@@ -10,6 +10,7 @@ export const SidebarWrapper = styled(Box)(({ theme }) => ({
   width: `calc(100% * ${cubeValue})`,
   flexDirection: 'column',
   height: '100vh',
+  gap: '5px'
 }));
 
 export const TaskList = styled(Box)(({ theme }) => ({

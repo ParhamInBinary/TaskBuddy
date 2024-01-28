@@ -27,11 +27,7 @@ export const Sidebar = () => {
               isCompleted={task.isCompleted}
             />
           ))}
-          <Button
-            variant="contained"
-            sx={{ margin: '5px' }}
-            onClick={handleOpenTaskModal}
-          >
+          <Button variant="contained" onClick={handleOpenTaskModal}>
             <Add />
           </Button>
         </>

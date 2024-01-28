@@ -3,7 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 interface ITask {
   title: string;
   description: string;
-  date: Date;
+  date: string;
   isCompleted: boolean;
 }
 

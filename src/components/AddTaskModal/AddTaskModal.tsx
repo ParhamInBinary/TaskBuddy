@@ -9,12 +9,18 @@ export const AddTaskModal = () => {
   const { isTaskModalOpen, handleOpenTaskModal, setTasklist } =
     useTaskContext();
 
+  const todayDateString = new Date().toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+
   const [tasktitle, setTaskTitle] = useState<string>('');
   const [taskDescription, setTaskDescription] = useState<string>('');
-  const [taskDate, setTaskDate] = useState<Date>(new Date());
+  const [taskDate, setTaskDate] = useState<string>(todayDateString);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const handleAddTask = (title: string, description: string, date: Date) => {
+  const handleAddTask = (title: string, description: string, date: string) => {
     // Input validation
     if (!title.trim() || !description.trim()) {
       setErrorMessage('Please enter a title and/or description.');
@@ -36,7 +42,7 @@ export const AddTaskModal = () => {
     handleOpenTaskModal();
     setTaskTitle('');
     setTaskDescription('');
-    setTaskDate(new Date());
+    setTaskDate(todayDateString);
     setErrorMessage('');
   };
 
@@ -78,7 +84,7 @@ export const AddTaskModal = () => {
               </Typography>
             )}
           </Box>
-          <Calendar variant={CalendarVaiant.MINI} />
+          <Calendar variant={CalendarVaiant.MINI} setTaskDate={setTaskDate} />
         </Box>
 
         <Box sx={{ display: 'flex', gap: 1 }}>
