@@ -23,7 +23,7 @@ export const DayGridItem = ({
         md={1}
         lg={1}
         xl={1}
-        sx={{ textAlign: 'center' }}
+        sx={{ textAlign: 'center', cursor: 'pointer' }}
       >
         <Typography
           variant="caption"

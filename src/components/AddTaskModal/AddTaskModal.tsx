@@ -9,23 +9,35 @@ export const AddTaskModal = () => {
   const { isTaskModalOpen, handleOpenTaskModal, setTasklist } =
     useTaskContext();
 
-  const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [date, setDate] = useState<Date>(new Date());
+  const [tasktitle, setTaskTitle] = useState<string>('');
+  const [taskDescription, setTaskDescription] = useState<string>('');
+  const [taskDate, setTaskDate] = useState<Date>(new Date());
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleAddTask = (title: string, description: string, date: Date) => {
+    // Input validation
+    if (!title.trim() || !description.trim()) {
+      setErrorMessage('Please enter a title and/or description.');
+      return;
+    }
+
+    // Sanitize input to prevent scripting attacks
+    const sanitizedTitle = title.replace(/<\/?[^>]+(>|$)/g, '');
+    const sanitizedDescription = description.replace(/<\/?[^>]+(>|$)/g, '');
+
     const newTask = {
-      title: title,
-      description: description,
+      title: sanitizedTitle,
+      description: sanitizedDescription,
       date: date,
       isCompleted: false,
     };
 
     setTasklist((prev) => [...prev, newTask]);
     handleOpenTaskModal();
-    setTitle('');
-    setDescription('');
-    setDate(new Date());
+    setTaskTitle('');
+    setTaskDescription('');
+    setTaskDate(new Date());
+    setErrorMessage('');
   };
 
   return (
@@ -36,33 +48,54 @@ export const AddTaskModal = () => {
       aria-describedby="modal-modal-description"
     >
       <TaskModal>
-        <Typography id="modal-modal-title" variant="h6" component="h2">
-          Add a task
+        <Typography id="modal-modal-title" variant="h5">
+          New task
         </Typography>
         <Box display="flex">
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 2,
+              marginRight: '10px',
+            }}
+          >
             <TextField
-              id="filled-basic"
               label="Title"
-              variant="filled"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              variant="outlined"
+              value={tasktitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
             />
             <TextField
-              id="filled-basic"
               label="Description"
-              variant="filled"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              variant="outlined"
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
             />
+            {errorMessage && (
+              <Typography variant="body2" color="error">
+                {errorMessage}
+              </Typography>
+            )}
           </Box>
           <Calendar variant={CalendarVaiant.MINI} />
         </Box>
 
-        <Button onClick={handleOpenTaskModal}>Cancel</Button>
-        <Button onClick={() => handleAddTask(title, description, date)}>
-          Add
-        </Button>
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Button
+            onClick={handleOpenTaskModal}
+            variant="outlined"
+            color="error"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => handleAddTask(tasktitle, taskDescription, taskDate)}
+            variant="contained"
+          >
+            Add
+          </Button>
+        </Box>
       </TaskModal>
     </Modal>
   );

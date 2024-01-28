@@ -83,13 +83,13 @@ export const Calendar = ({ variant }: ICalendar) => {
             padding: '0 10px',
           }}
         >
-          <Typography>
+          <Typography sx={{ cursor: 'pointer'}}>
             <NavigateBefore
               onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
             />
           </Typography>
           <Typography>{getMonthName(currentMonthIndex)}</Typography>
-          <Typography>
+          <Typography sx={{ cursor: 'pointer'}}>
             <NavigateNext
               onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
             />
