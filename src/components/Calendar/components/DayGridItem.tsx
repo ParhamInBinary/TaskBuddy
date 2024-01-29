@@ -31,51 +31,52 @@ export const DayGridItem = ({
     setTaskDate!(selectedDate);
   };
 
-  if (variant === CalendarVaiant.MINI) {
-    return (
-      <Grid
-        item
-        xs={1}
-        sm={1}
-        md={1}
-        lg={1}
-        xl={1}
-        sx={{ textAlign: 'center', cursor: 'pointer' }}
-        onClick={handleSetTaskDate}
-      >
-        <Typography
-          variant="caption"
-          sx={{
-            color: isToday ? 'red' : 'black',
-          }}
+  return (
+    <>
+      {variant === CalendarVaiant.MINI ? (
+        <Grid
+          item
+          xs={1}
+          sm={1}
+          md={1}
+          lg={1}
+          xl={1}
+          sx={{ textAlign: 'center', cursor: 'pointer' }}
+          onClick={handleSetTaskDate}
         >
-          {day}
-        </Typography>
-      </Grid>
-    );
-  }
-
-  if (variant === CalendarVaiant.REGULAR) {
-    return (
-      <Grid
-        item
-        xs={1}
-        sm={1}
-        md={1}
-        lg={1}
-        xl={1}
-        sx={RegularDayGridItemStyle}
-      >
-        {isToday ? (
-          <Box sx={IsTodayGridItemStyle}>
-            <Typography variant="body1">{day}</Typography>
-          </Box>
-        ) : (
-          <Typography variant="body1" sx={{ color: isToday ? 'red' : '#FFF' }}>
+          <Typography
+            variant="caption"
+            sx={{
+              color: isToday ? 'red' : 'black',
+            }}
+          >
             {day}
           </Typography>
-        )}
-      </Grid>
-    );
-  }
+        </Grid>
+      ) : (
+        <Grid
+          item
+          xs={1}
+          sm={1}
+          md={1}
+          lg={1}
+          xl={1}
+          sx={RegularDayGridItemStyle}
+        >
+          {isToday ? (
+            <Box sx={IsTodayGridItemStyle}>
+              <Typography variant="body1">{day}</Typography>
+            </Box>
+          ) : (
+            <Typography
+              variant="body1"
+              sx={{ color: isToday ? 'red' : '#FFF' }}
+            >
+              {day}
+            </Typography>
+          )}
+        </Grid>
+      )}
+    </>
+  );
 };

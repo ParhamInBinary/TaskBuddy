@@ -2,7 +2,6 @@ import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Box, Button, ButtonGroup, Grid, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 
-import { useTaskContext } from '../../context';
 import {
   CalendarVaiant,
   DayGridItem,
@@ -69,82 +68,80 @@ export const Calendar = ({ variant }: ICalendar) => {
     return calendar;
   }, [currentMonthIndex]);
 
-  /* =================================================== */
-  /* :::::::::::::::: ADD TASK CALENDAR :::::::::::::::: */
-  /* =================================================== */
+  return (
+    <>
+      {variant === CalendarVaiant.MINI ? (
+        /* =================================================== */
+        /* :::::::::::::::: ADD TASK CALENDAR :::::::::::::::: */
+        /* =================================================== */
 
-  if (variant === CalendarVaiant.MINI) {
-    return (
-      <Box>
-        <Box
-          sx={{
-            display: 'flex',
-            width: '100%',
-            justifyContent: 'space-between',
-            padding: '0 10px',
-          }}
-        >
-          <Typography sx={{ cursor: 'pointer' }}>
-            <NavigateBefore
-              onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
-            />
-          </Typography>
-          <Typography>{getMonthName(currentMonthIndex)}</Typography>
-          <Typography sx={{ cursor: 'pointer' }}>
-            <NavigateNext
-              onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
-            />
-          </Typography>
-        </Box>
-        <Grid container columns={7} width="200px">
-          {weekdaysCapitals.map((day, index) => (
-            <GridItem key={`weekday-${index}`} text={day} variant={variant} />
-          ))}
-          {renderDays}
-        </Grid>
-      </Box>
-    );
-  }
-
-  /* =================================================== */
-  /* :::::::::::::::: HOMEPAGE CALENDAR :::::::::::::::: */
-  /* =================================================== */
-
-  if (variant === CalendarVaiant.REGULAR) {
-    return (
-      <RegularCalendarWrapper>
-        <RegularCalendarHeader>
-          <Typography variant="h2" color={'#FFF'}>
-            <span style={{ fontWeight: '600' }}>
-              {getMonthName(currentMonthIndex).split(' ')[0]}
-            </span>{' '}
-            <span>{getMonthName(currentMonthIndex).split(' ')[1]}</span>
-          </Typography>
-          <ButtonGroup
-            variant="contained"
-            aria-label="outlined primary button group"
+        <Box>
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'space-between',
+              padding: '0 10px',
+            }}
           >
-            <Button
-              onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
+            <Typography sx={{ cursor: 'pointer' }}>
+              <NavigateBefore
+                onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
+              />
+            </Typography>
+            <Typography>{getMonthName(currentMonthIndex)}</Typography>
+            <Typography sx={{ cursor: 'pointer' }}>
+              <NavigateNext
+                onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
+              />
+            </Typography>
+          </Box>
+          <Grid container columns={7} width="200px">
+            {weekdaysCapitals.map((day, index) => (
+              <GridItem key={`weekday-${index}`} text={day} variant={variant} />
+            ))}
+            {renderDays}
+          </Grid>
+        </Box>
+      ) : (
+        /* =================================================== */
+        /* :::::::::::::::: HOMEPAGE CALENDAR :::::::::::::::: */
+        /* =================================================== */
+
+        <RegularCalendarWrapper>
+          <RegularCalendarHeader>
+            <Typography variant="h2" color={'#FFF'}>
+              <span style={{ fontWeight: '600' }}>
+                {getMonthName(currentMonthIndex).split(' ')[0]}
+              </span>{' '}
+              <span>{getMonthName(currentMonthIndex).split(' ')[1]}</span>
+            </Typography>
+            <ButtonGroup
+              variant="contained"
+              aria-label="outlined primary button group"
             >
-              <NavigateBefore />
-            </Button>
-            <Button
-              onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
-            >
-              <NavigateNext />
-            </Button>
-          </ButtonGroup>
-        </RegularCalendarHeader>
-        <Grid container columns={7}>
-          {weekdaysCapitals.map((day, index) => (
-            <GridItem key={`weekday-${index}`} text={day} variant={variant} />
-          ))}
-        </Grid>
-        <Grid container columns={7} flex={1}>
-          {renderDays}
-        </Grid>
-      </RegularCalendarWrapper>
-    );
-  }
+              <Button
+                onClick={() => handleSwitchMonth(MonthSwitchDirection.PREV)}
+              >
+                <NavigateBefore />
+              </Button>
+              <Button
+                onClick={() => handleSwitchMonth(MonthSwitchDirection.NEXT)}
+              >
+                <NavigateNext />
+              </Button>
+            </ButtonGroup>
+          </RegularCalendarHeader>
+          <Grid container columns={7}>
+            {weekdaysCapitals.map((day, index) => (
+              <GridItem key={`weekday-${index}`} text={day} variant={variant} />
+            ))}
+          </Grid>
+          <Grid container columns={7} flex={1}>
+            {renderDays}
+          </Grid>
+        </RegularCalendarWrapper>
+      )}
+    </>
+  );
 };
