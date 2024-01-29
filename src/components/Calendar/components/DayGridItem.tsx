@@ -2,7 +2,11 @@ import { Box, Grid, Typography } from '@mui/material';
 
 import { useTaskContext } from '../../../context';
 import { CalendarVaiant } from './calendarEnums';
-import { IsTodayGridItemStyle, RegularDayGridItemStyle } from './styles';
+import {
+  IsTodayGridItemStyle,
+  MiniDayGridItemStyle,
+  RegularDayGridItemStyle,
+} from './styles';
 import { GridItemType } from './types';
 
 export const DayGridItem = ({
@@ -10,26 +14,23 @@ export const DayGridItem = ({
   currentMonthIndex,
   variant,
 }: GridItemType) => {
-  const { setTaskDate } = useTaskContext();
+  const { taskDate, isDateSelected, handleSelectTaskDate } = useTaskContext();
 
   const today = new Date();
   const isToday =
     today.getDate() === day &&
     today.getMonth() === today.getMonth() + currentMonthIndex!;
 
-  const handleSetTaskDate = () => {
-    const date = new Date();
-    date.setMonth(date.getMonth() + currentMonthIndex!);
-    date.setDate(day!);
+  const thisGridDay = new Date(
+    new Date().setMonth(currentMonthIndex!, day)
+  ).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
 
-    const selectedDate = date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    });
-
-    setTaskDate!(selectedDate);
-  };
+  const isThisDaySelected =
+    isDateSelected && taskDate === thisGridDay ? true : false;
 
   return (
     <>
@@ -41,17 +42,14 @@ export const DayGridItem = ({
           md={1}
           lg={1}
           xl={1}
-          sx={{ textAlign: 'center', cursor: 'pointer' }}
-          onClick={handleSetTaskDate}
+          sx={{
+            ...MiniDayGridItemStyle,
+            background: isThisDaySelected ? 'blue' : isToday ? 'red' : 'none',
+            color: isThisDaySelected || isToday ? '#FFF' : 'black',
+          }}
+          onClick={() => handleSelectTaskDate(thisGridDay)}
         >
-          <Typography
-            variant="caption"
-            sx={{
-              color: isToday ? 'red' : 'black',
-            }}
-          >
-            {day}
-          </Typography>
+          <Typography variant="caption">{day}</Typography>
         </Grid>
       ) : (
         <Grid

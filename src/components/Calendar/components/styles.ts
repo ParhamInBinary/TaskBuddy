@@ -36,6 +36,13 @@ export const RegularDayGridItemStyle = {
   border: '.1px solid #FFF',
 };
 
+export const MiniDayGridItemStyle = {
+  textAlign: 'center',
+  padding: '3px',
+  cursor: 'pointer',
+  borderRadius: '50px',
+};
+
 export const IsTodayGridItemStyle = {
   display: 'flex',
   justifyContent: 'center',

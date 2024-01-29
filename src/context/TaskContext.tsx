@@ -19,7 +19,6 @@ interface TaskContextType {
   setTaskDescription: React.Dispatch<React.SetStateAction<string>>;
   errorMessage: string;
   taskDate: string;
-  setTaskDate: React.Dispatch<React.SetStateAction<string>>;
   handleAddTask: (title: string, description: string, date: string) => void;
   setTasklist: React.Dispatch<React.SetStateAction<TaskType[]>>;
   handleSelectTask: (taskId: number) => void;
@@ -30,6 +29,8 @@ interface TaskContextType {
     taskId: number,
     e: React.MouseEvent<SVGSVGElement>
   ) => void;
+  handleSelectTaskDate: (selectedDate: string) => void;
+  isDateSelected: boolean;
 }
 
 export const TaskContext = createContext({} as TaskContextType);
@@ -55,6 +56,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
   });
 
   const [taskDate, setTaskDate] = useState<string>(todayDateString);
+  const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
 
   const useFindTask = (taskId: number) => {
     const task = taskList.find((t: TaskType) => t.id === taskId);
@@ -65,6 +67,12 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     }
 
     return task;
+  };
+
+  const handleSelectTaskDate = (selectedDate: string) => {
+    // if (selectedDate === taskDate) return;
+    setTaskDate(selectedDate);
+    setIsDateSelected(true);
   };
 
   const handleAddTask = (title: string, description: string, date: string) => {
@@ -89,13 +97,14 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     setTasklist([...taskList, newTask]);
 
     handleOpenTaskModal();
-    setTaskTitle('');
-    setTaskDescription('');
-    setTaskDate(todayDateString);
-    setErrorMessage('');
   };
 
   const handleOpenTaskModal = () => {
+    setTaskDate(todayDateString);
+    setIsDateSelected(false);
+    setTaskTitle('');
+    setTaskDescription('');
+    setErrorMessage('');
     setIsTaskModalOpen(!isTaskModalOpen);
   };
 
@@ -159,7 +168,6 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
         setTaskDescription,
         errorMessage,
         taskDate,
-        setTaskDate,
         handleAddTask,
         setTasklist,
         handleSelectTask,
@@ -167,6 +175,8 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
         isTaskSelected,
         handleDeleteTask,
         handleCompleteTask,
+        handleSelectTaskDate,
+        isDateSelected,
       }}
     >
       {children}
