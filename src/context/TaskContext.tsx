@@ -153,6 +153,8 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
 
     // Update the taskList state with the updated task
     setTasklist(updatedTaskList);
+    setSelectedTask(null);
+    setIsTaskSelected(false);
   };
 
   return (

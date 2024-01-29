@@ -21,7 +21,7 @@ export const DayGridItem = ({
     today.getDate() === day &&
     today.getMonth() === today.getMonth() + currentMonthIndex!;
 
-  const thisGridDay = new Date(
+  const thisGridDayString = new Date(
     new Date().setMonth(currentMonthIndex!, day)
   ).toLocaleDateString('en-US', {
     month: 'short',
@@ -30,7 +30,7 @@ export const DayGridItem = ({
   });
 
   const isThisDaySelected =
-    isDateSelected && taskDate === thisGridDay ? true : false;
+    isDateSelected && taskDate === thisGridDayString ? true : false;
 
   return (
     <>
@@ -47,7 +47,7 @@ export const DayGridItem = ({
             background: isThisDaySelected ? 'blue' : isToday ? 'red' : 'none',
             color: isThisDaySelected || isToday ? '#FFF' : 'black',
           }}
-          onClick={() => handleSelectTaskDate(thisGridDay)}
+          onClick={() => handleSelectTaskDate(thisGridDayString)}
         >
           <Typography variant="caption">{day}</Typography>
         </Grid>
