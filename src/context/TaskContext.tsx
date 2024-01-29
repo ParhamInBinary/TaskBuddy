@@ -4,6 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 import { useLocalStorageState } from '../hooks';
 import { TaskType } from './types';
@@ -21,16 +22,18 @@ interface TaskContextType {
   taskDate: string;
   handleAddTask: (title: string, description: string, date: string) => void;
   setTasklist: React.Dispatch<React.SetStateAction<TaskType[]>>;
-  handleSelectTask: (taskId: number) => void;
+  handleSelectTask: (taskId: string) => void;
   selectedTask: TaskType | null;
   isTaskSelected: boolean;
-  handleDeleteTask: (taskId: number) => void;
+  handleDeleteTask: (taskId: string) => void;
   handleCompleteTask: (
-    taskId: number,
+    taskId: string,
     e: React.MouseEvent<SVGSVGElement>
   ) => void;
   handleSelectTaskDate: (selectedDate: string) => void;
   isDateSelected: boolean;
+  handleOpenForTaskEdit: (taskId: string) => void;
+  handleConfirmEditTask: (taskId: string) => void;
 }
 
 export const TaskContext = createContext({} as TaskContextType);
@@ -43,7 +46,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     'taskList'
   );
   const [isTaskModalOpen, setIsTaskModalOpen] = useState<boolean>(false);
-  const [tasktitle, setTaskTitle] = useState<string>('');
+  const [taskTitle, setTaskTitle] = useState<string>('');
   const [taskDescription, setTaskDescription] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [isTaskSelected, setIsTaskSelected] = useState<boolean>(false);
@@ -58,7 +61,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
   const [taskDate, setTaskDate] = useState<string>(todayDateString);
   const [isDateSelected, setIsDateSelected] = useState<boolean>(false);
 
-  const useFindTask = (taskId: number) => {
+  const useFindTask = (taskId: string) => {
     const task = taskList.find((t: TaskType) => t.id === taskId);
 
     if (!task) {
@@ -69,8 +72,17 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     return task;
   };
 
+  const resetModalAndTaskSelect = () => {
+    setTaskTitle('');
+    setTaskDescription('');
+    setTaskDate(todayDateString);
+    setIsDateSelected(false);
+    setErrorMessage('');
+    setIsTaskSelected(false);
+    setSelectedTask(null);
+  };
+
   const handleSelectTaskDate = (selectedDate: string) => {
-    // if (selectedDate === taskDate) return;
     setTaskDate(selectedDate);
     setIsDateSelected(true);
   };
@@ -87,7 +99,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     const sanitizedDescription = description.replace(/<\/?[^>]+(>|$)/g, '');
 
     const newTask: TaskType = {
-      id: Math.floor(Math.random() * 999999999),
+      id: uuidv4(),
       title: sanitizedTitle,
       description: sanitizedDescription,
       date: date,
@@ -100,20 +112,17 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleOpenTaskModal = () => {
-    setTaskDate(todayDateString);
-    setIsDateSelected(false);
-    setTaskTitle('');
-    setTaskDescription('');
-    setErrorMessage('');
     setIsTaskModalOpen(!isTaskModalOpen);
+    resetModalAndTaskSelect();
   };
 
   const handleClearAllTasks = () => {
     setTasklist([]);
   };
 
-  const handleSelectTask = (taskId: number) => {
+  const handleSelectTask = (taskId: string) => {
     const task = useFindTask(taskId);
+    if (task?.isCompleted) return;
 
     if (isTaskSelected && selectedTask?.id === taskId) {
       setSelectedTask(null);
@@ -124,20 +133,20 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const handleDeleteTask = (taskId: number) => {
+  const handleDeleteTask = (taskId: string) => {
     const task = useFindTask(taskId);
 
     setTasklist(taskList.filter((t: TaskType) => t.id !== task?.id));
   };
 
   const handleCompleteTask = (
-    taskId: number,
+    taskId: string,
     e: React.MouseEvent<SVGSVGElement>
   ) => {
     e.stopPropagation();
 
     // Find the index of the task in taskList
-    const taskIndex = taskList.findIndex((task) => task.id === taskId);
+    const taskIndex = taskList.findIndex((t) => t.id === taskId);
 
     if (taskIndex === -1) {
       console.error(`Task with ID ${taskId} not found.`);
@@ -157,6 +166,41 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
     setIsTaskSelected(false);
   };
 
+  const handleOpenForTaskEdit = (taskId: string) => {
+    const task = useFindTask(taskId);
+    if (task?.isCompleted) return;
+
+    setTaskTitle(task!.title);
+    setTaskDescription(task!.description);
+    setTaskDate(task!.date);
+    setSelectedTask(task!);
+    setIsDateSelected(true);
+    setIsTaskModalOpen(true);
+  };
+
+  const handleConfirmEditTask = (taskId: string) => {
+    // Find the index of the task in taskList
+    const taskIndex = taskList.findIndex((t) => t.id === taskId);
+
+    if (taskIndex === -1) {
+      console.error(`Task with ID ${taskId} not found.`);
+      return;
+    }
+
+    // Update the task with the updated values
+    const updatedTaskList = [...taskList];
+    updatedTaskList[taskIndex] = {
+      ...updatedTaskList[taskIndex],
+      title: taskTitle,
+      description: taskDescription,
+      date: taskDate,
+    };
+
+    // Update the taskList state with the updated task
+    setTasklist(updatedTaskList);
+    handleOpenTaskModal();
+  };
+
   return (
     <TaskContext.Provider
       value={{
@@ -164,7 +208,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
         isTaskModalOpen,
         handleClearAllTasks,
         handleOpenTaskModal,
-        tasktitle,
+        tasktitle: taskTitle,
         setTaskTitle,
         taskDescription,
         setTaskDescription,
@@ -179,6 +223,8 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
         handleCompleteTask,
         handleSelectTaskDate,
         isDateSelected,
+        handleOpenForTaskEdit,
+        handleConfirmEditTask,
       }}
     >
       {children}

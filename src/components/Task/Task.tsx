@@ -1,14 +1,19 @@
-import { CheckCircle, Delete, RadioButtonUnchecked } from '@mui/icons-material';
+import {
+  CheckCircle,
+  Delete,
+  Edit,
+  RadioButtonUnchecked,
+} from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 import { TaskType, useTaskContext } from '../../context';
 
 interface ITask {
-  id: number;
+  id: string;
   title: string;
   description: string;
   date: string;
   isCompleted: boolean;
-  handleSelectTask: (taskId: number) => void;
+  handleSelectTask: (taskId: string) => void;
   selectedTask: TaskType | null;
   isTaskSelected: boolean;
 }
@@ -23,7 +28,8 @@ export const Task = ({
   selectedTask,
   isTaskSelected,
 }: ITask) => {
-  const { handleDeleteTask, handleCompleteTask } = useTaskContext();
+  const { handleDeleteTask, handleCompleteTask, handleOpenForTaskEdit } =
+    useTaskContext();
 
   return (
     <Box
@@ -31,7 +37,7 @@ export const Task = ({
         display: 'flex',
         justifyContent: 'space-between',
         background: '#F4F4F4',
-        opacity: !isCompleted ? 1 : .4,
+        opacity: !isCompleted ? 1 : 0.4,
         padding: '5px',
         borderRadius: '4px',
         boxShadow:
@@ -40,8 +46,20 @@ export const Task = ({
       onClick={() => handleSelectTask(id)}
     >
       <Box>
-        <Typography variant="body1" fontWeight="600">
+        <Typography
+          variant="body1"
+          fontWeight="600"
+          sx={{ display: 'flex', alignItems: 'center' }}
+        >
           {title}
+          <Edit
+            onClick={() => handleOpenForTaskEdit(id)}
+            sx={{
+              fontSize: 17,
+              marginLeft: '5px',
+              cursor: !isCompleted ? 'pointer' : 'default',
+            }}
+          />
         </Typography>
         {isTaskSelected && selectedTask?.id === id && (
           <Typography variant="subtitle2">{description}</Typography>

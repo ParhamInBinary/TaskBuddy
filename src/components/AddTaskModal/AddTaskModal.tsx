@@ -15,6 +15,9 @@ export const AddTaskModal = () => {
     errorMessage,
     taskDate,
     handleAddTask,
+    handleConfirmEditTask,
+    selectedTask,
+    isTaskSelected,
   } = useTaskContext();
 
   return (
@@ -66,12 +69,23 @@ export const AddTaskModal = () => {
           >
             Cancel
           </Button>
-          <Button
-            onClick={() => handleAddTask(tasktitle, taskDescription, taskDate)}
-            variant="contained"
-          >
-            Add
-          </Button>
+          {!isTaskSelected ? (
+            <Button
+              onClick={() =>
+                handleAddTask(tasktitle, taskDescription, taskDate)
+              }
+              variant="contained"
+            >
+              Add
+            </Button>
+          ) : (
+            <Button
+              onClick={() => handleConfirmEditTask(selectedTask!.id)}
+              variant="contained"
+            >
+              Edit
+            </Button>
+          )}
         </Box>
       </TaskModal>
     </Modal>
