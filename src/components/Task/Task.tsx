@@ -1,4 +1,4 @@
-import { Delete, RadioButtonUnchecked } from '@mui/icons-material';
+import { CheckCircle, Delete, RadioButtonUnchecked } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
 import { TaskType, useTaskContext } from '../../context';
 
@@ -23,7 +23,7 @@ export const Task = ({
   selectedTask,
   isTaskSelected,
 }: ITask) => {
-  const { handleDeleteTask } = useTaskContext();
+  const { handleDeleteTask, handleCompleteTask } = useTaskContext();
 
   return (
     <Box
@@ -31,6 +31,7 @@ export const Task = ({
         display: 'flex',
         justifyContent: 'space-between',
         background: '#F4F4F4',
+        opacity: !isCompleted ? 1 : .4,
         padding: '5px',
         borderRadius: '4px',
         boxShadow:
@@ -54,7 +55,17 @@ export const Task = ({
           justifyContent: 'space-between',
         }}
       >
-        <RadioButtonUnchecked sx={{ color: '#1976d2' }} />
+        {!isCompleted ? (
+          <RadioButtonUnchecked
+            sx={{ color: '#1976d2' }}
+            onClick={(e) => handleCompleteTask(id, e)}
+          />
+        ) : (
+          <CheckCircle
+            sx={{ color: '#38D900' }}
+            onClick={(e) => handleCompleteTask(id, e)}
+          />
+        )}
         {isTaskSelected && selectedTask?.id === id && (
           <Delete
             sx={{ color: '#FF1818' }}

@@ -1,4 +1,9 @@
-import { PropsWithChildren, createContext, useContext, useState } from 'react';
+import React, {
+  PropsWithChildren,
+  createContext,
+  useContext,
+  useState,
+} from 'react';
 
 import { useLocalStorageState } from '../hooks';
 import { TaskType } from './types';
@@ -21,6 +26,10 @@ interface TaskContextType {
   selectedTask: TaskType | null;
   isTaskSelected: boolean;
   handleDeleteTask: (taskId: number) => void;
+  handleCompleteTask: (
+    taskId: number,
+    e: React.MouseEvent<SVGSVGElement>
+  ) => void;
 }
 
 export const TaskContext = createContext({} as TaskContextType);
@@ -46,6 +55,17 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
   });
 
   const [taskDate, setTaskDate] = useState<string>(todayDateString);
+
+  const useFindTask = (taskId: number) => {
+    const task = taskList.find((t: TaskType) => t.id === taskId);
+
+    if (!task) {
+      console.error(`Task with ID ${taskId} not found.`);
+      return;
+    }
+
+    return task;
+  };
 
   const handleAddTask = (title: string, description: string, date: string) => {
     // Input validation
@@ -84,31 +104,46 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handleSelectTask = (taskId: number) => {
-    const task = taskList.find((t: TaskType) => t.id === taskId);
-
-    if (!task) {
-      console.error(`Task with ID ${taskId} not found.`);
-      return;
-    }
+    const task = useFindTask(taskId);
 
     if (isTaskSelected && selectedTask?.id === taskId) {
       setSelectedTask(null);
       setIsTaskSelected(false);
     } else {
-      setSelectedTask(task);
+      setSelectedTask(task!);
       setIsTaskSelected(true);
     }
   };
 
   const handleDeleteTask = (taskId: number) => {
-    const task = taskList.find((t: TaskType) => t.id === taskId);
+    const task = useFindTask(taskId);
 
-    if (!task) {
+    setTasklist(taskList.filter((t: TaskType) => t.id !== task?.id));
+  };
+
+  const handleCompleteTask = (
+    taskId: number,
+    e: React.MouseEvent<SVGSVGElement>
+  ) => {
+    e.stopPropagation();
+
+    // Find the index of the task in taskList
+    const taskIndex = taskList.findIndex((task) => task.id === taskId);
+
+    if (taskIndex === -1) {
       console.error(`Task with ID ${taskId} not found.`);
       return;
     }
 
-    setTasklist(taskList.filter((t: TaskType) => t.id !== task.id));
+    // Update the task with the updated isCompleted value
+    const updatedTaskList = [...taskList];
+    updatedTaskList[taskIndex] = {
+      ...updatedTaskList[taskIndex],
+      isCompleted: !updatedTaskList[taskIndex].isCompleted,
+    };
+
+    // Update the taskList state with the updated task
+    setTasklist(updatedTaskList);
   };
 
   return (
@@ -131,6 +166,7 @@ export const TaskProvider = ({ children }: PropsWithChildren) => {
         selectedTask,
         isTaskSelected,
         handleDeleteTask,
+        handleCompleteTask,
       }}
     >
       {children}
