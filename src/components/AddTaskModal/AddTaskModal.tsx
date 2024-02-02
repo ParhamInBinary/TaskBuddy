@@ -1,4 +1,5 @@
-import { Box, Button, Modal, TextField, Typography } from '@mui/material';
+import Input from '@mui/joy/Input';
+import { Box, Button, Modal, Stack, Typography } from '@mui/material';
 
 import { useTaskContext } from '../../context';
 import { Calendar, CalendarVaiant } from '../Calendar';
@@ -31,33 +32,42 @@ export const AddTaskModal = () => {
         <Typography id="modal-modal-title" variant="h5">
           New task
         </Typography>
-        <Box display="flex" margin={'20px 0px'}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
-              marginRight: '10px',
-            }}
-          >
-            <TextField
-              label="Title"
-              variant="outlined"
+        <Box display="flex" margin={'20px 0px'} gap={2}>
+          <Stack spacing={1}>
+            <Input
+              variant="soft"
+              placeholder="Title"
               value={tasktitle}
               onChange={(e) => setTaskTitle(e.target.value)}
+              sx={{
+                border: '1px solid #999999',
+                '--Input-gap': '5px',
+                '--Input-placeholderOpacity': 0.5,
+                '--Input-focusedThickness': '1px',
+                '--Input-minHeight': '50px',
+                '--Input-paddingInline': '10px',
+              }}
             />
-            <TextField
-              label="Description"
-              variant="outlined"
+            <Input
+              variant="soft"
+              placeholder="Description"
               value={taskDescription}
               onChange={(e) => setTaskDescription(e.target.value)}
+              sx={{
+                border: '1px solid #999999',
+                '--Input-gap': '5px',
+                '--Input-placeholderOpacity': 0.5,
+                '--Input-focusedThickness': '1px',
+                '--Input-minHeight': '50px',
+                '--Input-paddingInline': '10px',
+              }}
             />
             {errorMessage && (
               <Typography variant="body2" color="error">
                 {errorMessage}
               </Typography>
             )}
-          </Box>
+          </Stack>
           <Calendar variant={CalendarVaiant.MINI} />
         </Box>
 

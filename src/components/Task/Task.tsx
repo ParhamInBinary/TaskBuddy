@@ -45,13 +45,24 @@ export const Task = ({
       }}
       onClick={() => handleSelectTask(id)}
     >
-      <Box>
-        <Typography
-          variant="body1"
-          fontWeight="600"
-          sx={{ display: 'flex', alignItems: 'start' }}
-        >
-          {title}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flex: 1,
+          overflow: 'scroll',
+        }}
+      >
+        <Box sx={{ display: 'flex' }}>
+          <Box sx={{ overflow: 'scroll' }}>
+            <Typography
+              variant="body1"
+              fontWeight="600"
+              sx={{ display: 'flex', alignItems: 'start' }}
+            >
+              {title}
+            </Typography>
+          </Box>
           <Edit
             onClick={() => handleOpenForTaskEdit(id)}
             sx={{
@@ -60,10 +71,12 @@ export const Task = ({
               cursor: !isCompleted ? 'pointer' : 'default',
             }}
           />
-        </Typography>
-        {isTaskSelected && selectedTask?.id === id && (
-          <Typography variant="subtitle2">{description}</Typography>
-        )}
+        </Box>
+        <Box sx={{ overflow: 'scroll' }}>
+          {isTaskSelected && selectedTask?.id === id && (
+            <Typography variant="subtitle2">{description}</Typography>
+          )}
+        </Box>
         <Typography variant="caption">{date}</Typography>
       </Box>
       <Box
