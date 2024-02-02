@@ -34,6 +34,7 @@ export const RegularDayGridItemStyle = {
   textAlign: 'end',
   padding: '5px 5px',
   border: '.1px solid #FFF',
+  position: 'relative',
 };
 
 export const MiniDayGridItemStyle = {
@@ -51,4 +52,14 @@ export const IsTodayGridItemStyle = {
   width: '25px',
   borderRadius: '50px',
   color: '#FFF',
+};
+
+export const isTaskForTodayStyle = {
+  position: 'absolute',
+  width: '10px',
+  height: '10px',
+  background: '#1565c0',
+  borderRadius: '10px',
+  bottom: 10,
+  left: 10,
 };

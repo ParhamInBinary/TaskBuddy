@@ -6,6 +6,7 @@ import {
   IsTodayGridItemStyle,
   MiniDayGridItemStyle,
   RegularDayGridItemStyle,
+  isTaskForTodayStyle,
 } from './styles';
 import { GridItemType } from './types';
 
@@ -14,7 +15,8 @@ export const DayGridItem = ({
   currentMonthIndex,
   variant,
 }: GridItemType) => {
-  const { taskDate, isDateSelected, handleSelectTaskDate } = useTaskContext();
+  const { taskDate, isDateSelected, handleSelectTaskDate, taskList } =
+    useTaskContext();
 
   const today = new Date();
   const isToday =
@@ -22,7 +24,7 @@ export const DayGridItem = ({
     today.getMonth() === today.getMonth() + currentMonthIndex!;
 
   const thisGridDayString = new Date(
-    new Date().setMonth(currentMonthIndex!, day)
+    new Date().setMonth(currentMonthIndex! + 1, day)
   ).toLocaleDateString('en-US', {
     month: 'short',
     day: 'numeric',
@@ -31,6 +33,11 @@ export const DayGridItem = ({
 
   const isThisDaySelected =
     isDateSelected && taskDate === thisGridDayString ? true : false;
+
+  const isTaskForToday = taskList.find(
+    (task) => task.date === thisGridDayString
+  );
+  console.log(isTaskForToday);
 
   return (
     <>
@@ -73,6 +80,7 @@ export const DayGridItem = ({
               {day}
             </Typography>
           )}
+          {isTaskForToday && <Box sx={isTaskForTodayStyle} />}
         </Grid>
       )}
     </>

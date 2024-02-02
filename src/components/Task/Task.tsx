@@ -49,7 +49,7 @@ export const Task = ({
         <Typography
           variant="body1"
           fontWeight="600"
-          sx={{ display: 'flex', alignItems: 'center' }}
+          sx={{ display: 'flex', alignItems: 'start' }}
         >
           {title}
           <Edit
