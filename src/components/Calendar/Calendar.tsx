@@ -1,7 +1,8 @@
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Box, Button, ButtonGroup, Grid, Typography } from '@mui/material';
-import { useMemo, useState } from 'react';
 
+import { useMemo } from 'react';
+import { useCalendarContext } from '../../context';
 import {
   CalendarVaiant,
   DayGridItem,
@@ -17,24 +18,13 @@ interface ICalendar {
 }
 
 export const Calendar = ({ variant }: ICalendar) => {
+  const { getMonthName, handleSwitchMonth, currentMonthIndex, today } =
+    useCalendarContext();
+
   const weekdaysCapitals =
     variant === CalendarVaiant.MINI
       ? ['M', 'T', 'W', 'T', 'F', 'S', 'S']
       : ['Mon', 'Tus', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  const today = new Date();
-  const [currentMonthIndex, setCurrentMonthIndex] = useState(0);
-
-  const handleSwitchMonth = (direction: MonthSwitchDirection) => {
-    setCurrentMonthIndex((prevIndex) =>
-      direction === MonthSwitchDirection.NEXT ? prevIndex + 1 : prevIndex - 1
-    );
-  };
-
-  const getMonthName = (index: number) => {
-    const date = new Date();
-    date.setMonth(date.getMonth() + index);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
-  };
 
   const renderDays = useMemo(() => {
     const firstDayOfMonth = new Date(
