@@ -87,7 +87,7 @@ export const Calendar = ({ variant }: ICalendar) => {
             </Typography>
           </Box>
           <Grid container columns={7} width="200px">
-            {weekdaysCapitals.map((day, index) => (
+            {weekdaysCapitals.map((day: string, index: number) => (
               <GridItem key={`weekday-${index}`} text={day} variant={variant} />
             ))}
             {renderDays}
@@ -123,7 +123,7 @@ export const Calendar = ({ variant }: ICalendar) => {
             </ButtonGroup>
           </RegularCalendarHeader>
           <Grid container columns={7}>
-            {weekdaysCapitals.map((day, index) => (
+            {weekdaysCapitals.map((day: string, index: number) => (
               <GridItem key={`weekday-${index}`} text={day} variant={variant} />
             ))}
           </Grid>

@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from '@mui/material';
 
-import { useTaskContext } from '../../../context';
+import { useCalendarContext, useTaskContext } from '../../../context';
 import { CalendarVaiant } from './calendarEnums';
 import {
   IsTodayGridItemStyle,
@@ -17,6 +17,7 @@ export const DayGridItem = ({
 }: GridItemType) => {
   const { taskDate, isDateSelected, handleSelectTaskDate, taskList } =
     useTaskContext();
+  const { handlePreviewTaskOnDay } = useCalendarContext();
 
   const today = new Date();
   const isToday =
@@ -37,10 +38,6 @@ export const DayGridItem = ({
   const isTaskForToday = taskList.find(
     (task) => task.date === thisGridDayString
   );
-  
-  const handlePreviewTaskOnDay = () => {
-    console.log(thisGridDayString)
-  }
 
   return (
     <>
@@ -70,7 +67,7 @@ export const DayGridItem = ({
           lg={1}
           xl={1}
           sx={RegularDayGridItemStyle}
-          onClick={handlePreviewTaskOnDay}
+          onClick={() => handlePreviewTaskOnDay(thisGridDayString)}
         >
           {isToday ? (
             <Box sx={IsTodayGridItemStyle}>
