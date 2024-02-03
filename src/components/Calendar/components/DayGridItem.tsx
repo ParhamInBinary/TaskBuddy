@@ -37,7 +37,10 @@ export const DayGridItem = ({
   const isTaskForToday = taskList.find(
     (task) => task.date === thisGridDayString
   );
-  console.log(isTaskForToday);
+  
+  const handlePreviewTaskOnDay = () => {
+    console.log(thisGridDayString)
+  }
 
   return (
     <>
@@ -67,6 +70,7 @@ export const DayGridItem = ({
           lg={1}
           xl={1}
           sx={RegularDayGridItemStyle}
+          onClick={handlePreviewTaskOnDay}
         >
           {isToday ? (
             <Box sx={IsTodayGridItemStyle}>

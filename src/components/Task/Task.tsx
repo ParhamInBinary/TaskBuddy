@@ -69,6 +69,7 @@ export const Task = ({
               fontSize: 17,
               marginLeft: '5px',
               cursor: !isCompleted ? 'pointer' : 'default',
+              opacity: .4
             }}
           />
         </Box>

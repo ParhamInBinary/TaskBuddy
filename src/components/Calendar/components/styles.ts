@@ -35,6 +35,10 @@ export const RegularDayGridItemStyle = {
   padding: '5px 5px',
   border: '.1px solid #FFF',
   position: 'relative',
+  '&:hover': {
+    boxShadow: 'inset 1px 1px 7px #FFF',
+    cursor: 'pointer'
+  },
 };
 
 export const MiniDayGridItemStyle = {
