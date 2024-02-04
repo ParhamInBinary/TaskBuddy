@@ -1,6 +1,6 @@
 import { Add, MoreVert } from '@mui/icons-material';
-
 import { Button } from '@mui/material';
+
 import { TaskType, useTaskContext } from '../../context';
 import { AddTaskModal } from '../AddTaskModal';
 import { Task } from '../Task';
@@ -12,14 +12,8 @@ import {
 } from './SidebarStyles';
 
 export const Sidebar = () => {
-  const {
-    taskList,
-    handleOpenTaskModal,
-    handleClearAllTasks,
-    handleSelectTask,
-    selectedTask,
-    isTaskSelected,
-  } = useTaskContext();
+  const { taskList, handleOpenTaskModal, handleClearAllTasks } =
+    useTaskContext();
 
   return (
     <SidebarWrapper>
@@ -38,9 +32,9 @@ export const Sidebar = () => {
                 date={task.date}
                 isCompleted={task.isCompleted}
                 id={task.id}
-                handleSelectTask={handleSelectTask}
-                selectedTask={selectedTask}
-                isTaskSelected={isTaskSelected}
+                // handleSelectTask={handleSelectTask}
+                // selectedTask={selectedTask}
+                // isTaskSelected={isTaskSelected}
               />
             ))}
           </>

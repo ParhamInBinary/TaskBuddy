@@ -5,7 +5,8 @@ import {
   RadioButtonUnchecked,
 } from '@mui/icons-material';
 import { Box, Typography } from '@mui/material';
-import { TaskType, useTaskContext } from '../../context';
+
+import { useTaskContext } from '../../context';
 
 interface ITask {
   id: string;
@@ -13,23 +14,17 @@ interface ITask {
   description: string;
   date: string;
   isCompleted: boolean;
-  handleSelectTask: (taskId: string) => void;
-  selectedTask: TaskType | null;
-  isTaskSelected: boolean;
 }
 
-export const Task = ({
-  id,
-  title,
-  description,
-  date,
-  isCompleted,
-  handleSelectTask,
-  selectedTask,
-  isTaskSelected,
-}: ITask) => {
-  const { handleDeleteTask, handleCompleteTask, handleOpenForTaskEdit } =
-    useTaskContext();
+export const Task = ({ id, title, description, date, isCompleted }: ITask) => {
+  const {
+    handleDeleteTask,
+    handleCompleteTask,
+    handleOpenForTaskEdit,
+    handleSelectTask,
+    selectedTask,
+    isTaskSelected,
+  } = useTaskContext();
 
   return (
     <Box
@@ -69,7 +64,7 @@ export const Task = ({
               fontSize: 17,
               marginLeft: '5px',
               cursor: !isCompleted ? 'pointer' : 'default',
-              opacity: .4
+              opacity: 0.4,
             }}
           />
         </Box>

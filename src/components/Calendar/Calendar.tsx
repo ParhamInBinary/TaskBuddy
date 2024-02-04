@@ -1,7 +1,7 @@
 import { NavigateBefore, NavigateNext } from '@mui/icons-material';
 import { Box, Button, ButtonGroup, Grid, Typography } from '@mui/material';
-
 import { useMemo } from 'react';
+
 import { useCalendarContext } from '../../context';
 import {
   CalendarVaiant,

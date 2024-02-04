@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 
 import { Calendar, CalendarVaiant, Sidebar, TaskPreview } from './components';
-import { useCalendarContext } from './context';
 
 function App() {
   return (
