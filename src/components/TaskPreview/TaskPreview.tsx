@@ -1,10 +1,13 @@
 import { Box, Modal, Typography } from '@mui/material';
 
-import { TaskType, useCalendarContext } from '../../context';
+import { TaskType, useCalendarContext, useTaskContext } from '../../context';
+import { Task } from '../Task';
 
 export const TaskPreview = () => {
   const { isTaskPreviewOpen, setIsTaskPreviewOpen, todaysTasks } =
     useCalendarContext();
+
+  const { handleSelectTask, selectedTask, isTaskSelected } = useTaskContext();
 
   return (
     <Modal open={isTaskPreviewOpen} onClose={() => setIsTaskPreviewOpen(false)}>
@@ -16,17 +19,24 @@ export const TaskPreview = () => {
           transform: 'translate(-50%, -50%)',
           padding: 2,
           borderRadius: '5px',
-          background: '#999999',
-          width: '310px',
+          background: '#FFF',
+          //   width: '310px',
         }}
       >
         <Box>
           {todaysTasks.length > 0 && (
-            <Typography>{`Tasks for ${todaysTasks[0].date}`}</Typography>
+            <Typography variant="h5">{`Tasks for ${todaysTasks[0].date}`}</Typography>
           )}
-          <Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             {todaysTasks.map((task: TaskType, index: number) => (
-              <Box>{task.title}</Box>
+              <Task
+                key={index}
+                title={task.title}
+                description={task.description}
+                date={task.date}
+                isCompleted={task.isCompleted}
+                id={task.id}
+              />
             ))}
           </Box>
         </Box>
