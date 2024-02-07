@@ -26,7 +26,7 @@ export const Sidebar = () => {
           <>
             {taskList.map((task: TaskType, index: number) => (
               <Task
-                key={index}
+                key={task.id}
                 title={task.title}
                 description={task.description}
                 date={task.date}

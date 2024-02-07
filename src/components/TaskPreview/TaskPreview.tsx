@@ -30,7 +30,7 @@ export const TaskPreview = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
             {todaysTasks.map((task: TaskType, index: number) => (
               <Task
-                key={index}
+                key={task.id}
                 title={task.title}
                 description={task.description}
                 date={task.date}
