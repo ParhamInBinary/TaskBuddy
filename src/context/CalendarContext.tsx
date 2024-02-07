@@ -40,10 +40,8 @@ export const CalendarProvider = ({ children }: PropsWithChildren) => {
   };
 
   const handlePreviewTaskOnDay = (dayString: string) => {
-    console.log(dayString);
     const todaysTasksArray = taskList.filter((task) => task.date === dayString);
 
-    console.log(todaysTasksArray);
     if (todaysTasksArray.length < 1) return;
 
     setTodaysTasks(todaysTasksArray);
